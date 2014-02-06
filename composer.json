@@ -1,0 +1,17 @@
+{
+	"name": "alto",
+	"require": {
+		"php": ">=5.3.0",
+		"altorouter/altorouter": "dev-master",
+        "twig/twig": "1.*",
+        "j4mie/idiorm": "1.*",
+        "wixel/gump": "dev-master",
+        "pimple/pimple": "2.0.*@dev"
+	},
+    "autoload": {
+        "psr-4": {
+            "Roo\\": "core/",
+            "App\\": "module/"
+        }
+    }
+}

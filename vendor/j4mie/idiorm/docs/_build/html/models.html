@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Models &mdash; Idiorm  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Idiorm  documentation" href="index.html" />
+    <link rel="next" title="Transactions" href="transactions.html" />
+    <link rel="prev" title="Querying" href="querying.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="transactions.html" title="Transactions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="querying.html" title="Querying"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-data-from-objects">
+<h2>Getting data from objects<a class="headerlink" href="#getting-data-from-objects" title="Permalink to this headline">¶</a></h2>
+<p>Once you&#8217;ve got a set of records (objects) back from a query, you can
+access properties on those objects (the values stored in the columns in
+its corresponding table) in two ways: by using the <tt class="docutils literal"><span class="pre">get</span></tt> method, or
+simply by accessing the property on the object directly:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// The following two forms are equivalent</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$person</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+<span class="nv">$name</span> <span class="o">=</span> <span class="nv">$person</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>You can also get the all the data wrapped by an ORM instance using the
+<tt class="docutils literal"><span class="pre">as_array</span></tt> method. This will return an associative array mapping
+column names (keys) to their values.</p>
+<p>The <tt class="docutils literal"><span class="pre">as_array</span></tt> method takes column names as optional arguments. If one
+or more of these arguments is supplied, only matching column names will
+be returned.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">();</span>
+
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">first_name</span> <span class="o">=</span> <span class="s1">&#39;Fred&#39;</span><span class="p">;</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">surname</span> <span class="o">=</span> <span class="s1">&#39;Bloggs&#39;</span><span class="p">;</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+
+<span class="c1">// Returns array(&#39;first_name&#39; =&gt; &#39;Fred&#39;, &#39;surname&#39; =&gt; &#39;Bloggs&#39;, &#39;age&#39; =&gt; 50)</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$person</span><span class="o">-&gt;</span><span class="na">as_array</span><span class="p">();</span>
+
+<span class="c1">// Returns array(&#39;first_name&#39; =&gt; &#39;Fred&#39;, &#39;age&#39; =&gt; 50)</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$person</span><span class="o">-&gt;</span><span class="na">as_array</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-records">
+<h2>Updating records<a class="headerlink" href="#updating-records" title="Permalink to this headline">¶</a></h2>
+<p>To update the database, change one or more of the properties of the
+object, then call the <tt class="docutils literal"><span class="pre">save</span></tt> method to commit the changes to the
+database. Again, you can change the values of the object&#8217;s properties
+either by using the <tt class="docutils literal"><span class="pre">set</span></tt> method or by setting the value of the
+property directly. By using the <tt class="docutils literal"><span class="pre">set</span></tt> method it is also possible to
+update multiple properties at once, by passing in an associative array:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// The following two forms are equivalent</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob Smith&#39;</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="c1">// This is equivalent to the above two assignments</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bob Smith&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;age&#39;</span>  <span class="o">=&gt;</span> <span class="mi">20</span>
+<span class="p">));</span>
+
+<span class="c1">// Syncronise the object with the database</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="section" id="properties-containing-expressions">
+<h3>Properties containing expressions<a class="headerlink" href="#properties-containing-expressions" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to set properties on the model that contain database
+expressions using the <tt class="docutils literal"><span class="pre">set_expr</span></tt> method.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob Smith&#39;</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set_expr</span><span class="p">(</span><span class="s1">&#39;updated&#39;</span><span class="p">,</span> <span class="s1">&#39;NOW()&#39;</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">updated</span></tt> column&#8217;s value will be inserted into query in its raw
+form therefore allowing the database to execute any functions referenced
+- such as <tt class="docutils literal"><span class="pre">NOW()</span></tt> in this case.</p>
+</div>
+</div>
+<div class="section" id="creating-new-records">
+<h2>Creating new records<a class="headerlink" href="#creating-new-records" title="Permalink to this headline">¶</a></h2>
+<p>To add a new record, you need to first create an &#8220;empty&#8221; object
+instance. You then set values on the object as normal, and save it.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">();</span>
+
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">&#39;Joe Bloggs&#39;</span><span class="p">;</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>After the object has been saved, you can call its <tt class="docutils literal"><span class="pre">id()</span></tt> method to
+find the autogenerated primary key value that the database assigned to
+it.</p>
+<div class="section" id="id1">
+<h3>Properties containing expressions<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to set properties on the model that contain database
+expressions using the <tt class="docutils literal"><span class="pre">set_expr</span></tt> method.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">create</span><span class="p">();</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob Smith&#39;</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">set_expr</span><span class="p">(</span><span class="s1">&#39;added&#39;</span><span class="p">,</span> <span class="s1">&#39;NOW()&#39;</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">added</span></tt> column&#8217;s value will be inserted into query in its raw form
+therefore allowing the database to execute any functions referenced -
+such as <tt class="docutils literal"><span class="pre">NOW()</span></tt> in this case.</p>
+</div>
+</div>
+<div class="section" id="checking-whether-a-property-has-been-modified">
+<h2>Checking whether a property has been modified<a class="headerlink" href="#checking-whether-a-property-has-been-modified" title="Permalink to this headline">¶</a></h2>
+<p>To check whether a property has been changed since the object was
+created (or last saved), call the <tt class="docutils literal"><span class="pre">is_dirty</span></tt> method:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$name_has_changed</span> <span class="o">=</span> <span class="nv">$person</span><span class="o">-&gt;</span><span class="na">is_dirty</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span> <span class="c1">// Returns true or false</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-records">
+<h2>Deleting records<a class="headerlink" href="#deleting-records" title="Permalink to this headline">¶</a></h2>
+<p>To delete an object from the database, simply call its <tt class="docutils literal"><span class="pre">delete</span></tt>
+method.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nv">$person</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>To delete more than one object from the database, build a query:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">where_equal</span><span class="p">(</span><span class="s1">&#39;zipcode&#39;</span><span class="p">,</span> <span class="mi">55555</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">delete_many</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Models</a><ul>
+<li><a class="reference internal" href="#getting-data-from-objects">Getting data from objects</a></li>
+<li><a class="reference internal" href="#updating-records">Updating records</a><ul>
+<li><a class="reference internal" href="#properties-containing-expressions">Properties containing expressions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-new-records">Creating new records</a><ul>
+<li><a class="reference internal" href="#id1">Properties containing expressions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#checking-whether-a-property-has-been-modified">Checking whether a property has been modified</a></li>
+<li><a class="reference internal" href="#deleting-records">Deleting records</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="querying.html"
+                        title="previous chapter">Querying</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="transactions.html"
+                        title="next chapter">Transactions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/models.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="transactions.html" title="Transactions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="querying.html" title="Querying"
+             >previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Jamie Matthews, Simon Holywell, Durham Hale.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

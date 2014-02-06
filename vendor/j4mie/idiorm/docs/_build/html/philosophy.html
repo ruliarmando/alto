@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Philosophy &mdash; Idiorm  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Idiorm  documentation" href="index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to Idiorm’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Idiorm’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="philosophy">
+<h1>Philosophy<a class="headerlink" href="#philosophy" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="http://en.wikipedia.org/wiki/Pareto_principle">Pareto Principle</a> states that <em>roughly 80% of the effects come
+from 20% of the causes.</em> In software development terms, this could be
+translated into something along the lines of <em>80% of the results come
+from 20% of the complexity</em>. In other words, you can get pretty far by
+being pretty stupid.</p>
+<p><strong>Idiorm is deliberately simple</strong>. Where other ORMs consist of dozens of
+classes with complex inheritance hierarchies, Idiorm has only one class,
+<tt class="docutils literal"><span class="pre">ORM</span></tt>, which functions as both a fluent <tt class="docutils literal"><span class="pre">SELECT</span></tt> query API and a
+simple CRUD model class. If my hunch is correct, this should be quite
+enough for many real-world applications. Let’s face it: most of us
+aren’t building Facebook. We’re working on small-to-medium-sized
+projects, where the emphasis is on simplicity and rapid development
+rather than infinite flexibility and features.</p>
+<p>You might think of <strong>Idiorm</strong> as a <em>micro-ORM</em>. It could, perhaps, be
+“the tie to go along with <a class="reference external" href="http://github.com/codeguy/slim/">Slim</a>’s tux” (to borrow a turn of phrase
+from <a class="reference external" href="http://github.com/documentcloud/underscore">DocumentCloud</a>). Or it could be an effective bit of spring
+cleaning for one of those horrendous SQL-littered legacy PHP apps you
+have to support.</p>
+<p><strong>Idiorm</strong> might also provide a good base upon which to build
+higher-level, more complex database abstractions. For example, <a class="reference external" href="http://github.com/j4mie/paris">Paris</a>
+is an implementation of the <a class="reference external" href="http://martinfowler.com/eaaCatalog/activeRecord.html">Active Record pattern</a> built on top of
+Idiorm.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Idiorm&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/philosophy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Idiorm’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Jamie Matthews, Simon Holywell, Durham Hale.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

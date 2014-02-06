@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; Idiorm  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Idiorm  documentation" href="index.html" />
+    <link rel="next" title="Querying" href="querying.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="querying.html" title="Querying"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>The first thing you need to know about Idiorm is that <em>you don’t need to
+define any model classes to use it</em>. With almost every other ORM, the
+first thing to do is set up your models and map them to database tables
+(through configuration variables, XML files or similar). With Idiorm,
+you can start using the ORM straight away.</p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>First, <tt class="docutils literal"><span class="pre">require</span></tt> the Idiorm source file:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">require_once</span> <span class="s1">&#39;idiorm.php&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then, pass a <em>Data Source Name</em> connection string to the <tt class="docutils literal"><span class="pre">configure</span></tt>
+method of the ORM class. This is used by PDO to connect to your
+database. For more information, see the <a class="reference external" href="http://php.net/manual/en/pdo.construct.php">PDO documentation</a>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;sqlite:./example.db&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>You may also need to pass a username and password to your database
+driver, using the <tt class="docutils literal"><span class="pre">username</span></tt> and <tt class="docutils literal"><span class="pre">password</span></tt> configuration options.
+For example, if you are using MySQL:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;mysql:host=localhost;dbname=my_database&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;database_user&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;top_secret&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Also see “Configuration” section below.</p>
+</div>
+<div class="section" id="id1">
+<h2>Configuration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Other than setting the DSN string for the database connection (see
+above), the <tt class="docutils literal"><span class="pre">configure</span></tt> method can be used to set some other simple
+options on the ORM class. Modifying settings involves passing a
+key/value pair to the <tt class="docutils literal"><span class="pre">configure</span></tt> method, representing the setting you
+wish to modify and the value you wish to set it to.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;setting_name&#39;</span><span class="p">,</span> <span class="s1">&#39;value_for_setting&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A shortcut is provided to allow passing multiple key/value pairs at
+once.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;setting_name_1&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;value_for_setting_1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;setting_name_2&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;value_for_setting_2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;etc&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;etc&#39;</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<p>Use the <tt class="docutils literal"><span class="pre">get_config</span></tt> method to read current settings.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$isLoggingEnabled</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">get_config</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+<span class="c1">// some crazy loop we don&#39;t want to log</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="nv">$isLoggingEnabled</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="database-authentication-details">
+<h3>Database authentication details<a class="headerlink" href="#database-authentication-details" title="Permalink to this headline">¶</a></h3>
+<p>Settings: <tt class="docutils literal"><span class="pre">username</span></tt> and <tt class="docutils literal"><span class="pre">password</span></tt></p>
+<p>Some database adapters (such as MySQL) require a username and password
+to be supplied separately to the DSN string. These settings allow you to
+provide these values. A typical MySQL connection setup might look like
+this:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;mysql:host=localhost;dbname=my_database&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;database_user&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;top_secret&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Or you can combine the connection setup into a single line using the
+configuration array shortcut:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;connection_string&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql:host=localhost;dbname=my_database&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;database_user&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;top_secret&#39;</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="result-sets">
+<h3>Result sets<a class="headerlink" href="#result-sets" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">return_result_sets</span></tt></p>
+<p>Collections of results can be returned as an array (default) or as a result set.
+See the <cite>find_result_set()</cite> documentation for more information.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;return_result_sets&#39;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span> <span class="c1">// returns result sets</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended that you setup your projects to use result sets as they
+are more flexible.</p>
+</div>
+</div>
+<div class="section" id="pdo-driver-options">
+<h3>PDO Driver Options<a class="headerlink" href="#pdo-driver-options" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">driver_options</span></tt></p>
+<p>Some database adapters require (or allow) an array of driver-specific
+configuration options. This setting allows you to pass these options
+through to the PDO constructor. For more information, see <a class="reference external" href="http://www.php.net/manual/en/pdo.construct.php">the PDO
+documentation</a>. For example, to force the MySQL driver to use UTF-8 for
+the connection:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;driver_options&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nx">PDO</span><span class="o">::</span><span class="na">MYSQL_ATTR_INIT_COMMAND</span> <span class="o">=&gt;</span> <span class="s1">&#39;SET NAMES utf8&#39;</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pdo-error-mode">
+<h3>PDO Error Mode<a class="headerlink" href="#pdo-error-mode" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">error_mode</span></tt></p>
+<p>This can be used to set the <tt class="docutils literal"><span class="pre">PDO::ATTR_ERRMODE</span></tt> setting on the
+database connection class used by Idiorm. It should be passed one of the
+class constants defined by PDO. For example:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;error_mode&#39;</span><span class="p">,</span> <span class="nx">PDO</span><span class="o">::</span><span class="na">ERRMODE_WARNING</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The default setting is <tt class="docutils literal"><span class="pre">PDO::ERRMODE_EXCEPTION</span></tt>. For full details of
+the error modes available, see <a class="reference external" href="http://uk2.php.net/manual/en/pdo.setattribute.php">the PDO set attribute documentation</a>.</p>
+</div>
+<div class="section" id="pdo-object-access">
+<h3>PDO object access<a class="headerlink" href="#pdo-object-access" title="Permalink to this headline">¶</a></h3>
+<p>Should it ever be necessary, the PDO object used by Idiorm may be
+accessed directly through <tt class="docutils literal"><span class="pre">ORM::get_db()</span></tt>, or set directly via
+<tt class="docutils literal"><span class="pre">ORM::set_db()</span></tt>. This should be an unusual occurance.</p>
+<p>After a statement has been executed by any means, such as <tt class="docutils literal"><span class="pre">::save()</span></tt>
+or <tt class="docutils literal"><span class="pre">::raw_execute()</span></tt>, the <tt class="docutils literal"><span class="pre">PDOStatement</span></tt> instance used may be
+accessed via <tt class="docutils literal"><span class="pre">ORM::get_last_statement()</span></tt>. This may be useful in order
+to access <tt class="docutils literal"><span class="pre">PDOStatement::errorCode()</span></tt>, if PDO exceptions are turned
+off, or to access the <tt class="docutils literal"><span class="pre">PDOStatement::rowCount()</span></tt> method, which returns
+differing results based on the underlying database. For more
+information, see the <a class="reference external" href="http://www.php.net/manual/en/class.pdostatement.php">PDOStatement documentation</a>.</p>
+</div>
+<div class="section" id="identifier-quote-character">
+<h3>Identifier quote character<a class="headerlink" href="#identifier-quote-character" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">identifier_quote_character</span></tt></p>
+<p>Set the character used to quote identifiers (eg table name, column
+name). If this is not set, it will be autodetected based on the database
+driver being used by PDO.</p>
+</div>
+<div class="section" id="id-column">
+<h3>ID Column<a class="headerlink" href="#id-column" title="Permalink to this headline">¶</a></h3>
+<p>By default, the ORM assumes that all your tables have a primary key
+column called <tt class="docutils literal"><span class="pre">id</span></tt>. There are two ways to override this: for all
+tables in the database, or on a per-table basis.</p>
+<p>Setting: <tt class="docutils literal"><span class="pre">id_column</span></tt></p>
+<p>This setting is used to configure the name of the primary key column for
+all tables. If your ID column is called <tt class="docutils literal"><span class="pre">primary_key</span></tt>, use:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;id_column&#39;</span><span class="p">,</span> <span class="s1">&#39;primary_key&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Setting: <tt class="docutils literal"><span class="pre">id_column_overrides</span></tt></p>
+<p>This setting is used to specify the primary key column name for each
+table separately. It takes an associative array mapping table names to
+column names. If, for example, your ID column names include the name of
+the table, you can use the following configuration:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;id_column_overrides&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;person&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;person_id&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;role&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;role_id&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limit-clause-style">
+<h3>Limit clause style<a class="headerlink" href="#limit-clause-style" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">limit_clause_style</span></tt></p>
+<p>You can specify the limit clause style in the configuration. This is to facilitate
+a MS SQL style limit clause that uses the <tt class="docutils literal"><span class="pre">TOP</span></tt> syntax.</p>
+<p>Acceptable values are <tt class="docutils literal"><span class="pre">ORM::LIMIT_STYLE_TOP_N</span></tt> and <tt class="docutils literal"><span class="pre">ORM::LIMIT_STYLE_LIMIT</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the PDO driver you are using is one of sqlsrv, dblib or mssql then Idiorm
+will automatically select the <tt class="docutils literal"><span class="pre">ORM::LIMIT_STYLE_TOP_N</span></tt> for you unless you
+override the setting.</p>
+</div>
+</div>
+<div class="section" id="query-logging">
+<h3>Query logging<a class="headerlink" href="#query-logging" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">logging</span></tt></p>
+<p>Idiorm can log all queries it executes. To enable query logging, set the
+<tt class="docutils literal"><span class="pre">logging</span></tt> option to <tt class="docutils literal"><span class="pre">true</span></tt> (it is <tt class="docutils literal"><span class="pre">false</span></tt> by default).</p>
+<p>When query logging is enabled, you can use two static methods to access
+the log. <tt class="docutils literal"><span class="pre">ORM::get_last_query()</span></tt> returns the most recent query
+executed. <tt class="docutils literal"><span class="pre">ORM::get_query_log()</span></tt> returns an array of all queries
+executed.</p>
+</div>
+<div class="section" id="query-logger">
+<h3>Query logger<a class="headerlink" href="#query-logger" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">logger</span></tt></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You must enable <tt class="docutils literal"><span class="pre">logging</span></tt> for this setting to have any effect.</p>
+</div>
+<p>It is possible to supply a <tt class="docutils literal"><span class="pre">callable</span></tt> to this configuration setting, which will
+be executed for every query that idiorm executes. In PHP a <tt class="docutils literal"><span class="pre">callable</span></tt> is anything
+that can be executed as if it were a function. Most commonly this will take the
+form of a anonymous function.</p>
+<p>This setting is useful if you wish to log queries with an external library as it
+allows you too whatever you would like from inside the callback function.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$log_string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$log_string</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-caching">
+<h3>Query caching<a class="headerlink" href="#query-caching" title="Permalink to this headline">¶</a></h3>
+<p>Setting: <tt class="docutils literal"><span class="pre">caching</span></tt></p>
+<p>Idiorm can cache the queries it executes during a request. To enable
+query caching, set the <tt class="docutils literal"><span class="pre">caching</span></tt> option to <tt class="docutils literal"><span class="pre">true</span></tt> (it is <tt class="docutils literal"><span class="pre">false</span></tt>
+by default).</p>
+<p>When query caching is enabled, Idiorm will cache the results of every
+<tt class="docutils literal"><span class="pre">SELECT</span></tt> query it executes. If Idiorm encounters a query that has
+already been run, it will fetch the results directly from its cache and
+not perform a database query.</p>
+<div class="section" id="warnings-and-gotchas">
+<h4>Warnings and gotchas<a class="headerlink" href="#warnings-and-gotchas" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Note that this is an in-memory cache that only persists data for the
+duration of a single request. This is <em>not</em> a replacement for a
+persistent cache such as <a class="reference external" href="http://www.memcached.org/">Memcached</a>.</li>
+<li>Idiorm’s cache is very simple, and does not attempt to invalidate
+itself when data changes. This means that if you run a query to
+retrieve some data, modify and save it, and then run the same query
+again, the results will be stale (ie, they will not reflect your
+modifications). This could potentially cause subtle bugs in your
+application. If you have caching enabled and you are experiencing odd
+behaviour, disable it and try again. If you do need to perform such
+operations but still wish to use the cache, you can call the
+<tt class="docutils literal"><span class="pre">ORM::clear_cache()</span></tt> to clear all existing cached queries.</li>
+<li>Enabling the cache will increase the memory usage of your
+application, as all database rows that are fetched during each
+request are held in memory. If you are working with large quantities
+of data, you may wish to disable the cache.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#setup">Setup</a></li>
+<li><a class="reference internal" href="#id1">Configuration</a><ul>
+<li><a class="reference internal" href="#database-authentication-details">Database authentication details</a></li>
+<li><a class="reference internal" href="#result-sets">Result sets</a></li>
+<li><a class="reference internal" href="#pdo-driver-options">PDO Driver Options</a></li>
+<li><a class="reference internal" href="#pdo-error-mode">PDO Error Mode</a></li>
+<li><a class="reference internal" href="#pdo-object-access">PDO object access</a></li>
+<li><a class="reference internal" href="#identifier-quote-character">Identifier quote character</a></li>
+<li><a class="reference internal" href="#id-column">ID Column</a></li>
+<li><a class="reference internal" href="#limit-clause-style">Limit clause style</a></li>
+<li><a class="reference internal" href="#query-logging">Query logging</a></li>
+<li><a class="reference internal" href="#query-logger">Query logger</a></li>
+<li><a class="reference internal" href="#query-caching">Query caching</a><ul>
+<li><a class="reference internal" href="#warnings-and-gotchas">Warnings and gotchas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="querying.html"
+                        title="next chapter">Querying</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/configuration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="querying.html" title="Querying"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Jamie Matthews, Simon Holywell, Durham Hale.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Home Page</h1>
+    
+    <div>
+        <ul>
+        {% for thread in threads %}
+            <li>{{ thread.judul }} | {{ thread.nama_kategori }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

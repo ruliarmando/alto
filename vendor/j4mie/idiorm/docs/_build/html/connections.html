@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mulitple Connections &mdash; Idiorm  documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Idiorm  documentation" href="index.html" />
+    <link rel="prev" title="Transactions" href="transactions.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="transactions.html" title="Transactions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mulitple-connections">
+<h1>Mulitple Connections<a class="headerlink" href="#mulitple-connections" title="Permalink to this headline">¶</a></h1>
+<p>Idiorm now works with multiple conections. Most of the static functions
+work with an optional connection name as an extra parameter. For the
+<tt class="docutils literal"><span class="pre">ORM::configure</span></tt> method, this means that when passing connection
+strings for a new connection, the second parameter, which is typically
+omitted, should be <tt class="docutils literal"><span class="pre">null</span></tt>. In all cases, if a connection name is not
+provided, it defaults to <tt class="docutils literal"><span class="pre">ORM::DEFAULT_CONNECTION</span></tt>.</p>
+<p>When chaining, once <tt class="docutils literal"><span class="pre">for_table()</span></tt> has been used in the chain, remaining
+calls in the chain use the correct connection.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Default connection</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;sqlite:./example.db&#39;</span><span class="p">);</span>
+
+<span class="c1">// A named connection, where &#39;remote&#39; is an arbitrary key name</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;mysql:host=localhost;dbname=my_database&#39;</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;database_user&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">);</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">configure</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;top_secret&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">);</span>
+
+<span class="c1">// Using default connection</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Using default connection, explicitly</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">DEFAULT_CONNECTION</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Using named connection</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;different_person&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="supported-methods">
+<h2>Supported Methods<a class="headerlink" href="#supported-methods" title="Permalink to this headline">¶</a></h2>
+<p>In each of these cases, the <tt class="docutils literal"><span class="pre">$connection_name</span></tt> parameter is optional, and is
+an arbitrary key identifying the named connection.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">ORM::configure($key,</span> <span class="pre">$value,</span> <span class="pre">$connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::for_table($table_name,</span> <span class="pre">$connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::set_db($pdo,</span> <span class="pre">$connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::get_db($connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::raw_execute($query,</span> <span class="pre">$parameters,</span> <span class="pre">$connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::get_last_query($connection_name)</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">ORM::get_query_log($connection_name)</span></tt></li>
+</ul>
+<p>Of these methods, only <tt class="docutils literal"><span class="pre">ORM::get_last_query($connection_name)</span></tt> does <em>not</em>
+fallback to the default connection when no connection name is passed.
+Instead, passing no connection name (or <tt class="docutils literal"><span class="pre">null</span></tt>) returns the most recent
+query on <em>any</em> connection.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Using default connection, explicitly</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;person&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Using named connection</span>
+<span class="nv">$person</span> <span class="o">=</span> <span class="nx">ORM</span><span class="o">::</span><span class="na">for_table</span><span class="p">(</span><span class="s1">&#39;different_person&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">find_one</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Last query on *any* connection</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">get_last_query</span><span class="p">();</span> <span class="c1">// returns query on &#39;different_person&#39; using &#39;remote&#39;</span>
+
+<span class="c1">// returns query on &#39;person&#39; using default by passing in the connection name</span>
+<span class="nx">ORM</span><span class="o">::</span><span class="na">get_last_query</span><span class="p">(</span><span class="nx">ORM</span><span class="o">::</span><span class="na">DEFAULT_CONNECTION</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>There is no support for joins across connections</strong></li>
+<li>Multiple connections do not share configuration settings. This means if
+one connection has logging set to <tt class="docutils literal"><span class="pre">true</span></tt> and the other does not, only
+queries from the logged connection will be available via
+<tt class="docutils literal"><span class="pre">ORM::get_last_query()</span></tt> and <tt class="docutils literal"><span class="pre">ORM::get_query_log()</span></tt>.</li>
+<li>A new method has been added, <tt class="docutils literal"><span class="pre">ORM::get_connection_names()</span></tt>, which returns
+an array of connection names.</li>
+<li>Caching <em>should</em> work with multiple connections (remember to turn caching
+on for each connection), but the unit tests are not robust. Please report
+any errors.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Mulitple Connections</a><ul>
+<li><a class="reference internal" href="#supported-methods">Supported Methods</a><ul>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="transactions.html"
+                        title="previous chapter">Transactions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/connections.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="transactions.html" title="Transactions"
+             >previous</a> |</li>
+        <li><a href="index.html">Idiorm  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2013, Jamie Matthews, Simon Holywell, Durham Hale.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3a0.
+    </div>
+  </body>
+</html>
